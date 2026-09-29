@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bottega Vita lenta — Garmisch-Partenkirchen</title>
+  <meta name="description" content="Bottega Vita lenta – italienische Tagesbar, Vinothek, Caffetteria & Aperitifs am Mohrenplatz in Garmisch-Partenkirchen.">
+  <style>
+    :root{
+      --cream:#f3ead0;
+      --paper:#f5efe3;
+      --wine:#741d26;
+      --wine-dark:#4e1117;
+      --ink:#231713;
+      --ease:cubic-bezier(.22,.61,.36,1);
+    }
+    *{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:#fff;
+      font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+      overflow-x:hidden;
+    }
+    .stage{
+      position:fixed;inset:0;z-index:0;overflow:hidden;
+      background:
+        radial-gradient(80% 70% at 70% 25%,rgba(255,235,190,.35),transparent 55%),
+        radial-gradient(60% 70% at 15% 80%,rgba(125,31,39,.38),transparent 58%),
+        linear-gradient(145deg,#4a2720 0%,#1d1513 55%,#0f0b0a 100%);
+    }
+    .orb{
+      position:absolute;width:50vmax;height:50vmax;border-radius:50%;
+      filter:blur(80px);opacity:.22;will-change:transform;
+    }
+    .orb.one{background:#b86c3e;left:-10vmax;top:-8vmax}
+    .orb.two{background:#8a1e2d;right:-12vmax;bottom:-14vmax}
+    .grain{
+      position:absolute;inset:-50%;opacity:.08;mix-blend-mode:screen;pointer-events:none;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.5'/></svg>");
+    }
+    .meter{
+      position:fixed;top:0;left:0;z-index:60;height:2px;width:100%;
+      transform:scaleX(0);transform-origin:0 50%;background:var(--cream);opacity:.72;
+    }
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:50;
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:max(15px,calc(env(safe-area-inset-top,0px) + 12px)) clamp(18px,4vw,46px) 15px;
+      background:linear-gradient(to bottom,rgba(14,9,8,.62),rgba(14,9,8,.18) 68%,transparent);
+    }
+    .brand{display:flex;flex-direction:column;line-height:1;color:#fff;text-decoration:none}
+    .brand strong{font-size:15px;letter-spacing:.12em;font-weight:600}
+    .brand em{font-family:Georgia,serif;font-size:12px;margin-top:5px;color:rgba(255,255,255,.72)}
+    nav{display:flex;align-items:center;gap:20px}
+    nav a{color:rgba(255,255,255,.88);text-decoration:none;font-size:14px}
+    .pill{
+      display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 20px;
+      border-radius:999px;border:0;background:var(--cream);color:var(--wine-dark);
+      font-weight:600;text-decoration:none;cursor:pointer;
+    }
+    .panels{position:fixed;inset:0;z-index:20;pointer-events:none}
+    .panel{
+      position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:max(100px,calc(env(safe-area-inset-top,0px) + 84px)) 22px
+      max(100px,calc(env(safe-area-inset-bottom,0px) + 82px));
+      opacity:0;will-change:opacity,transform;
+    }
+    .eyebrow{
+      font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.68);
+      margin-bottom:18px;
+    }
+    h1{
+      margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;
+      font-size:clamp(48px,9vw,118px);line-height:.9;letter-spacing:-.055em;
+      max-width:11ch;text-wrap:balance;
+    }
+    .sub{
+      margin:22px 0 0;max-width:38ch;font-size:clamp(15px,1.5vw,19px);
+      line-height:1.5;color:rgba(255,255,255,.78);
+    }
+    .cta{margin-top:30px;pointer-events:auto}
+    footer{
+      position:fixed;left:0;right:0;bottom:0;z-index:50;text-align:center;
+      padding:15px 18px max(16px,calc(env(safe-area-inset-bottom,0px) + 12px));
+      color:rgba(255,255,255,.52);font-size:11px;
+      background:linear-gradient(to top,rgba(14,9,8,.55),rgba(14,9,8,.12) 70%,transparent);
+      pointer-events:none;
+    }
+    .track{height:560vh;min-height:3200px}
+    @media(max-width:720px){
+      nav a:not(.pill){display:none}
+      .pill{height:38px;padding:0 16px;font-size:13px}
+      h1{font-size:clamp(44px,14vw,68px);max-width:9ch}
+      .sub{font-size:15px;max-width:31ch}
+    }
+  </style>
+</head>
+<body>
+  <i class="meter" id="meter"></i>
+
+  <div class="stage">
+    <div class="orb one" id="orb1"></div>
+    <div class="orb two" id="orb2"></div>
+    <div class="grain"></div>
+  </div>
+
+  <header>
+    <a class="brand" href="#">
+      <strong>BOTTEGA</strong>
+      <em>Vita lenta</em>
+    </a>
+    <nav>
+      <a href="https://www.instagram.com/bottega_vitalenta/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=Mohrenplatz+12+Garmisch-Partenkirchen" target="_blank" rel="noopener">Anfahrt</a>
+      <a class="pill" href="#menu">Speisekarte</a>
+    </nav>
+  </header>
+
+  <main class="panels">
+    <section class="panel" data-panel>
+      <div class="eyebrow">Italienische Tagesbar · Garmisch-Partenkirchen</div>
+      <h1>Vita lenta.</h1>
+      <p class="sub">Vinothek, Caffetteria & Aperitifs. Italienischer Genuss am Mohrenplatz, ohne unnötige Eile.</p>
+      <div class="cta"><a class="pill" href="#menu">Speisekarte</a></div>
+    </section>
+
+    <section class="panel" data-panel>
+      <div class="eyebrow">Caffetteria & Pasticceria</div>
+      <h1>Caffè. Dolci. Niente fretta.</h1>
+      <p class="sub">Espresso, Cappuccino, Cannoli, Tiramisù und Pistazienkuchen.</p>
+    </section>
+
+    <section class="panel" data-panel>
+      <div class="eyebrow">Vinothek & Aperitivo</div>
+      <h1>Aperitivo, come in Italia.</h1>
+      <p class="sub">Wein, Aperol, Negroni, Bellini und kleine Gerichte dazu.</p>
+    </section>
+
+    <section class="panel" data-panel>
+      <div class="eyebrow">Paninoteca & Tradizione</div>
+      <h1>Focaccia. Burrata. Amore.</h1>
+      <p class="sub">Panini, Caprese, Carpaccio und italienische Klassiker.</p>
+    </section>
+  </main>
+
+  <footer>Mohrenplatz 12 · Garmisch-Partenkirchen · Di–So 10:00–22:00 Uhr</footer>
+  <div class="track" id="menu"></div>
+
+  <script>
+  (function(){
+    "use strict";
+    var panels=[].slice.call(document.querySelectorAll("[data-panel]"));
+    var meter=document.getElementById("meter");
+    var orb1=document.getElementById("orb1");
+    var orb2=document.getElementById("orb2");
+    var progress=0;
+    var CUES=[
+      [0.00,0.00,0.15,0.23],
+      [0.28,0.36,0.43,0.51],
+      [0.56,0.64,0.71,0.79],
+      [0.84,0.90,1.08,1.18]
+    ];
+    function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+    function smooth(t){return t*t*(3-2*t)}
+    function ramp(p,a,b){return b<=a?(p>=b?1:0):smooth(clamp((p-a)/(b-a),0,1))}
+    function readScroll(){
+      var max=document.documentElement.scrollHeight-window.innerHeight;
+      progress=max>0?clamp(window.pageYOffset/max,0,1):0;
+    }
+    function paint(){
+      meter.style.transform="scaleX("+progress+")";
+      panels.forEach(function(el,i){
+        var c=CUES[i];
+        var enter=ramp(progress,c[0],c[1]);
+        var leave=ramp(progress,c[2],c[3]);
+        var o=enter*(1-leave);
+        var y=(1-enter)*22-leave*22;
+        el.style.opacity=o;
+        el.style.transform="translate3d(0,"+y+"px,0)";
+        el.style.pointerEvents=o>.6?"auto":"none";
+      });
+      orb1.style.transform="translate3d("+(progress*90)+"px,"+(progress*55)+"px,0) scale("+(1+progress*.18)+")";
+      orb2.style.transform="translate3d("+(-progress*80)+"px,"+(-progress*45)+"px,0) scale("+(1.12-progress*.12)+")";
+      requestAnimationFrame(paint);
+    }
+    window.addEventListener("scroll",readScroll,{passive:true});
+    window.addEventListener("resize",readScroll);
+    readScroll();
+    paint();
+  })();
+  </script>
+</body>
+</html>
