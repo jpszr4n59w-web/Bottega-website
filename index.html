@@ -3,192 +3,872 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11100f">
   <title>Bottega Vita lenta — Garmisch-Partenkirchen</title>
   <meta name="description" content="Bottega Vita lenta – italienische Tagesbar, Vinothek, Caffetteria & Aperitifs am Mohrenplatz in Garmisch-Partenkirchen.">
   <style>
     :root{
-      --cream:#f3ead0;
-      --paper:#f5efe3;
-      --wine:#741d26;
-      --wine-dark:#4e1117;
-      --ink:#231713;
+      --black:#11100f;
+      --espresso:#241713;
+      --brown:#513126;
+      --wine:#7b2029;
+      --wine-dark:#54151c;
+      --cream:#f2eadb;
+      --paper:#f7f3ec;
+      --card:#fffaf2;
+      --ink:#211815;
+      --muted:#786c64;
+      --line:rgba(33,24,21,.12);
       --ease:cubic-bezier(.22,.61,.36,1);
+      --shadow:0 22px 70px rgba(38,24,17,.09);
     }
+
     *{box-sizing:border-box}
-    html{-webkit-text-size-adjust:100%}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
     body{
       margin:0;
       background:var(--paper);
-      color:#fff;
-      font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+      color:var(--ink);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
     }
-    .stage{
-      position:fixed;inset:0;z-index:0;overflow:hidden;
+    a{color:inherit}
+    button{font:inherit}
+    ::selection{background:var(--wine);color:white}
+
+    /* ---------- NAV ---------- */
+    .nav{
+      position:fixed;
+      z-index:100;
+      top:0;left:0;right:0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:max(14px,calc(env(safe-area-inset-top,0px) + 10px)) clamp(18px,4vw,52px) 14px;
+      color:#fff;
+      transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),backdrop-filter .35s;
+      border-bottom:1px solid transparent;
+    }
+    body.in-content .nav{
+      color:var(--ink);
+      background:rgba(247,243,236,.88);
+      border-color:var(--line);
+      backdrop-filter:blur(18px) saturate(1.2);
+      -webkit-backdrop-filter:blur(18px) saturate(1.2);
+    }
+    .brand{
+      text-decoration:none;
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      min-width:0;
+    }
+    .brand b{
+      font-size:15px;
+      letter-spacing:.14em;
+      font-weight:650;
+    }
+    .brand em{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:13px;
+      font-weight:400;
+      opacity:.72;
+    }
+    .nav-links{display:flex;align-items:center;gap:clamp(14px,2.4vw,28px)}
+    .nav-links>a:not(.nav-pill){
+      font-size:13.5px;
+      text-decoration:none;
+      opacity:.82;
+    }
+    .nav-pill{
+      min-height:40px;
+      padding:0 18px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      text-decoration:none;
+      font-size:13.5px;
+      font-weight:600;
+      color:var(--wine-dark);
+      background:var(--cream);
+      -webkit-text-fill-color:var(--wine-dark);
+      box-shadow:0 8px 32px rgba(0,0,0,.10);
+    }
+    body.in-content .nav-pill{
+      color:#fff;
+      -webkit-text-fill-color:#fff;
+      background:var(--wine);
+    }
+
+    /* ---------- SCROLL VIDEO INTRO ---------- */
+    .hero-scroll{
+      position:relative;
+      height:430vh;
+      min-height:3000px;
+      background:#000;
+    }
+    .hero-sticky{
+      position:sticky;
+      top:0;
+      height:100svh;
+      min-height:560px;
+      overflow:hidden;
+      background:#080706;
+    }
+    #coffeeVideo{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center 46%;
+      transform:scale(1.035);
+      filter:contrast(1.04) saturate(.86) brightness(.78);
+      will-change:transform;
+    }
+    .video-vignette{
+      position:absolute;inset:0;
+      pointer-events:none;
       background:
-        radial-gradient(80% 70% at 70% 25%,rgba(255,235,190,.35),transparent 55%),
-        radial-gradient(60% 70% at 15% 80%,rgba(125,31,39,.38),transparent 58%),
-        linear-gradient(145deg,#4a2720 0%,#1d1513 55%,#0f0b0a 100%);
+        linear-gradient(to bottom,rgba(0,0,0,.42),transparent 22%,transparent 67%,rgba(0,0,0,.58)),
+        radial-gradient(90% 75% at 50% 45%,transparent 25%,rgba(0,0,0,.43) 100%);
     }
-    .orb{
-      position:absolute;width:50vmax;height:50vmax;border-radius:50%;
-      filter:blur(80px);opacity:.22;will-change:transform;
+    .video-grain{
+      position:absolute;inset:-50%;
+      pointer-events:none;
+      opacity:.08;
+      mix-blend-mode:screen;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3'/></filter><rect width='130' height='130' filter='url(%23n)' opacity='.55'/></svg>");
     }
-    .orb.one{background:#b86c3e;left:-10vmax;top:-8vmax}
-    .orb.two{background:#8a1e2d;right:-12vmax;bottom:-14vmax}
-    .grain{
-      position:absolute;inset:-50%;opacity:.08;mix-blend-mode:screen;pointer-events:none;
-      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.5'/></svg>");
-    }
-    .meter{
-      position:fixed;top:0;left:0;z-index:60;height:2px;width:100%;
-      transform:scaleX(0);transform-origin:0 50%;background:var(--cream);opacity:.72;
-    }
-    header{
-      position:fixed;left:0;right:0;top:0;z-index:50;
-      display:flex;align-items:center;justify-content:space-between;gap:14px;
-      padding:max(15px,calc(env(safe-area-inset-top,0px) + 12px)) clamp(18px,4vw,46px) 15px;
-      background:linear-gradient(to bottom,rgba(14,9,8,.62),rgba(14,9,8,.18) 68%,transparent);
-    }
-    .brand{display:flex;flex-direction:column;line-height:1;color:#fff;text-decoration:none}
-    .brand strong{font-size:15px;letter-spacing:.12em;font-weight:600}
-    .brand em{font-family:Georgia,serif;font-size:12px;margin-top:5px;color:rgba(255,255,255,.72)}
-    nav{display:flex;align-items:center;gap:20px}
-    nav a{color:rgba(255,255,255,.88);text-decoration:none;font-size:14px}
-    .pill{
-      display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 20px;
-      border-radius:999px;border:0;background:var(--cream);color:var(--wine-dark);
-      font-weight:600;text-decoration:none;cursor:pointer;
-    }
-    .panels{position:fixed;inset:0;z-index:20;pointer-events:none}
-    .panel{
-      position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      text-align:center;padding:max(100px,calc(env(safe-area-inset-top,0px) + 84px)) 22px
-      max(100px,calc(env(safe-area-inset-bottom,0px) + 82px));
-      opacity:0;will-change:opacity,transform;
-    }
-    .eyebrow{
-      font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.68);
-      margin-bottom:18px;
-    }
-    h1{
-      margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;
-      font-size:clamp(48px,9vw,118px);line-height:.9;letter-spacing:-.055em;
-      max-width:11ch;text-wrap:balance;
-    }
-    .sub{
-      margin:22px 0 0;max-width:38ch;font-size:clamp(15px,1.5vw,19px);
-      line-height:1.5;color:rgba(255,255,255,.78);
-    }
-    .cta{margin-top:30px;pointer-events:auto}
-    footer{
-      position:fixed;left:0;right:0;bottom:0;z-index:50;text-align:center;
-      padding:15px 18px max(16px,calc(env(safe-area-inset-bottom,0px) + 12px));
-      color:rgba(255,255,255,.52);font-size:11px;
-      background:linear-gradient(to top,rgba(14,9,8,.55),rgba(14,9,8,.12) 70%,transparent);
+    .hero-copy{
+      position:absolute;
+      inset:0;
+      z-index:3;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:100px 20px 90px;
       pointer-events:none;
     }
-    .track{height:560vh;min-height:3200px}
-    @media(max-width:720px){
-      nav a:not(.pill){display:none}
-      .pill{height:38px;padding:0 16px;font-size:13px}
-      h1{font-size:clamp(44px,14vw,68px);max-width:9ch}
-      .sub{font-size:15px;max-width:31ch}
+    .hero-logo{
+      transform:translate3d(0,18px,0) scale(.96);
+      opacity:0;
+      will-change:opacity,transform;
+      color:#fff;
+      text-shadow:0 6px 45px rgba(0,0,0,.48);
+    }
+    .hero-logo .overline{
+      display:block;
+      margin-bottom:12px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.23em;
+      font-weight:600;
+      opacity:.72;
+    }
+    .hero-logo h1{
+      margin:0;
+      font-size:clamp(58px,12vw,170px);
+      line-height:.82;
+      letter-spacing:-.075em;
+      font-weight:650;
+    }
+    .hero-logo em{
+      display:block;
+      margin-top:15px;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(24px,4vw,54px);
+      line-height:1;
+      font-weight:400;
+      letter-spacing:-.035em;
+    }
+    .scroll-note{
+      position:absolute;
+      z-index:4;
+      bottom:max(24px,calc(env(safe-area-inset-bottom,0px) + 16px));
+      left:50%;
+      transform:translateX(-50%);
+      color:rgba(255,255,255,.65);
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      white-space:nowrap;
+      transition:opacity .25s;
+    }
+    .progress{
+      position:absolute;
+      z-index:5;
+      left:0;bottom:0;
+      width:100%;
+      height:2px;
+      background:rgba(255,255,255,.18);
+    }
+    .progress i{
+      display:block;
+      width:100%;
+      height:100%;
+      transform:scaleX(0);
+      transform-origin:0 50%;
+      background:var(--cream);
+    }
+    .video-status{
+      position:absolute;
+      z-index:6;
+      left:50%;top:50%;
+      transform:translate(-50%,-50%);
+      color:rgba(255,255,255,.7);
+      font-size:12px;
+      letter-spacing:.08em;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    /* ---------- MAIN SITE ---------- */
+    .site{
+      position:relative;
+      z-index:10;
+      background:var(--paper);
+      border-radius:34px 34px 0 0;
+      margin-top:-34px;
+      overflow:hidden;
+      box-shadow:0 -24px 80px rgba(0,0,0,.16);
+    }
+    .section{
+      width:min(1180px,calc(100% - 40px));
+      margin:0 auto;
+      padding:clamp(72px,10vw,132px) 0;
+    }
+    .intro{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:clamp(28px,6vw,88px);
+      align-items:end;
+    }
+    .kicker{
+      margin:0 0 18px;
+      color:var(--wine);
+      font-size:11px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+    }
+    .intro h2,
+    .section-title{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(48px,7vw,94px);
+      font-weight:400;
+      line-height:.94;
+      letter-spacing:-.055em;
+    }
+    .intro-right{
+      justify-self:end;
+      width:min(100%,430px);
+    }
+    .intro-right p{
+      margin:0;
+      color:var(--muted);
+      font-size:clamp(16px,1.8vw,20px);
+      line-height:1.55;
+    }
+    .quick-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:26px;
+    }
+    .btn{
+      min-height:46px;
+      padding:0 19px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+      background:#fff;
+    }
+    .btn.primary{background:var(--wine);color:#fff;border-color:var(--wine)}
+    .btn.dark{background:var(--black);color:#fff;border-color:var(--black)}
+
+    .moods{
+      padding-top:0;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+    .mood{
+      min-height:260px;
+      border-radius:26px;
+      padding:26px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .mood:nth-child(1){background:linear-gradient(145deg,#1c1714,#3a251e);color:#fff}
+    .mood:nth-child(2){background:linear-gradient(145deg,#8c2831,#5a151d);color:#fff}
+    .mood:nth-child(3){background:linear-gradient(145deg,#ead9b9,#f6eedf);color:var(--ink)}
+    .mood small{
+      font-size:11px;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      opacity:.66;
+    }
+    .mood strong{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(35px,4vw,52px);
+      line-height:.95;
+      font-weight:400;
+      letter-spacing:-.045em;
+      position:relative;
+      z-index:2;
+    }
+    .mood:after{
+      content:"";
+      position:absolute;
+      width:190px;height:190px;
+      right:-45px;top:-40px;
+      border:1px solid currentColor;
+      border-radius:50%;
+      opacity:.10;
+      box-shadow:0 0 0 28px currentColor inset;
+    }
+
+    /* ---------- MENU ---------- */
+    .menu-section{
+      background:#eee5d6;
+      border-top:1px solid rgba(84,21,28,.08);
+      border-bottom:1px solid rgba(84,21,28,.08);
+    }
+    .menu-section .section{width:min(1240px,calc(100% - 32px))}
+    .menu-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:28px;
+      margin-bottom:34px;
+    }
+    .menu-note{
+      margin:0;
+      max-width:34ch;
+      text-align:right;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .menu-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+    .menu-card{
+      background:rgba(255,250,242,.92);
+      border:1px solid rgba(84,21,28,.09);
+      border-radius:24px;
+      padding:clamp(20px,3vw,30px);
+      box-shadow:0 12px 35px rgba(58,37,30,.045);
+    }
+    .menu-card.wide{grid-column:1/-1}
+    .menu-card h3{
+      margin:0 0 16px;
+      font-family:Georgia,"Times New Roman",serif;
+      color:var(--wine-dark);
+      font-size:30px;
+      font-weight:400;
+      letter-spacing:-.03em;
+    }
+    .menu-cols{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:0 30px;
+    }
+    .menu-item{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:10px 18px;
+      padding:12px 0;
+      border-bottom:1px solid var(--line);
+      break-inside:avoid;
+    }
+    .menu-item:last-child{border-bottom:0}
+    .menu-name{
+      font-size:15px;
+      font-weight:600;
+      line-height:1.25;
+    }
+    .menu-desc{
+      grid-column:1/2;
+      margin-top:-5px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.42;
+    }
+    .price{
+      grid-column:2/3;
+      grid-row:1/3;
+      align-self:start;
+      font-size:14px;
+      font-weight:650;
+      white-space:nowrap;
+    }
+    .simple .menu-item{padding:9px 0}
+    .simple .menu-name{font-weight:500}
+    .allergen{
+      margin:22px 0 0;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    /* ---------- VISIT ---------- */
+    .visit-grid{
+      display:grid;
+      grid-template-columns:.82fr 1.18fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    .visit-card,.map-card{
+      border:1px solid var(--line);
+      border-radius:26px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+    .visit-card{
+      padding:clamp(26px,4vw,42px);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:410px;
+    }
+    .visit-card h3{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-weight:400;
+      font-size:clamp(40px,5vw,66px);
+      line-height:.95;
+      letter-spacing:-.05em;
+    }
+    .facts{display:grid;gap:18px;margin-top:36px}
+    .fact{padding-top:16px;border-top:1px solid var(--line)}
+    .fact small{
+      display:block;
+      margin-bottom:6px;
+      color:var(--muted);
+      font-size:10px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .fact b{font-size:16px;font-weight:600;line-height:1.4}
+    .map-card{min-height:410px}
+    .map-card iframe{
+      display:block;
+      width:100%;
+      height:100%;
+      min-height:410px;
+      border:0;
+      filter:saturate(.72) contrast(.98);
+    }
+    .visit-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+
+    footer{
+      background:var(--black);
+      color:#fff;
+      padding:38px clamp(20px,4vw,52px) max(38px,calc(env(safe-area-inset-bottom,0px) + 28px));
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:22px;
+      font-size:12px;
+    }
+    footer strong{letter-spacing:.12em}
+    footer span{color:rgba(255,255,255,.55)}
+
+    @media(max-width:850px){
+      .intro,.visit-grid{grid-template-columns:1fr}
+      .intro-right{justify-self:start;width:min(100%,560px)}
+      .menu-head{align-items:flex-start;flex-direction:column}
+      .menu-note{text-align:left}
+      .moods{grid-template-columns:1fr}
+      .mood{min-height:210px}
+      .visit-card{min-height:auto}
+    }
+    @media(max-width:680px){
+      .nav-links>a:not(.nav-pill){display:none}
+      .brand em{display:none}
+      .nav-pill{min-height:38px;padding:0 15px;font-size:13px}
+      .hero-scroll{height:380vh;min-height:2500px}
+      .hero-logo h1{font-size:clamp(58px,18vw,92px)}
+      .hero-logo em{font-size:28px}
+      .section{width:min(100% - 28px,1180px);padding:72px 0}
+      .site{border-radius:26px 26px 0 0;margin-top:-26px}
+      .intro h2,.section-title{font-size:clamp(44px,14vw,68px)}
+      .menu-grid{grid-template-columns:1fr}
+      .menu-card.wide{grid-column:auto}
+      .menu-cols{grid-template-columns:1fr}
+      .menu-card{border-radius:20px}
+      .map-card,.map-card iframe{min-height:340px}
+      footer{align-items:flex-start;flex-direction:column}
+    }
+    @media(max-width:390px){
+      .nav{padding-left:14px;padding-right:14px}
+      .brand b{font-size:13px}
+      .hero-copy{padding-left:14px;padding-right:14px}
+      .menu-item{gap:8px 12px}
+      .menu-name{font-size:14px}
+      .price{font-size:13px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
     }
   </style>
 </head>
 <body>
-  <i class="meter" id="meter"></i>
 
-  <div class="stage">
-    <div class="orb one" id="orb1"></div>
-    <div class="orb two" id="orb2"></div>
-    <div class="grain"></div>
-  </div>
-
-  <header>
-    <a class="brand" href="#">
-      <strong>BOTTEGA</strong>
-      <em>Vita lenta</em>
-    </a>
-    <nav>
+  <header class="nav">
+    <a class="brand" href="#top"><b>BOTTEGA</b><em>Vita lenta</em></a>
+    <nav class="nav-links" aria-label="Hauptnavigation">
+      <a href="#menu">Speisekarte</a>
+      <a href="#visit">Besuchen</a>
       <a href="https://www.instagram.com/bottega_vitalenta/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.google.com/maps/search/?api=1&query=Mohrenplatz+12+Garmisch-Partenkirchen" target="_blank" rel="noopener">Anfahrt</a>
-      <a class="pill" href="#menu">Speisekarte</a>
+      <a class="nav-pill" href="#menu">Menü</a>
     </nav>
   </header>
 
-  <main class="panels">
-    <section class="panel" data-panel>
-      <div class="eyebrow">Italienische Tagesbar · Garmisch-Partenkirchen</div>
-      <h1>Vita lenta.</h1>
-      <p class="sub">Vinothek, Caffetteria & Aperitifs. Italienischer Genuss am Mohrenplatz, ohne unnötige Eile.</p>
-      <div class="cta"><a class="pill" href="#menu">Speisekarte</a></div>
+  <section class="hero-scroll" id="top" aria-label="Bottega Intro">
+    <div class="hero-sticky">
+      <video id="coffeeVideo" muted playsinline preload="auto" disablepictureinpicture></video>
+      <div class="video-vignette"></div>
+      <div class="video-grain"></div>
+
+      <div class="hero-copy">
+        <div class="hero-logo" id="heroLogo">
+          <span class="overline">Garmisch-Partenkirchen</span>
+          <h1>BOTTEGA</h1>
+          <em>Vita lenta</em>
+        </div>
+      </div>
+
+      <div class="scroll-note" id="scrollNote">Scrollen</div>
+      <div class="video-status" id="videoStatus">Video wird geladen …</div>
+      <div class="progress"><i id="introProgress"></i></div>
+    </div>
+  </section>
+
+  <main class="site" id="site">
+    <section class="section intro">
+      <div>
+        <p class="kicker">Mohrenplatz 12 · Garmisch-Partenkirchen</p>
+        <h2>Bottega<br>Vita lenta.</h2>
+      </div>
+      <div class="intro-right">
+        <p>Italienische Tagesbar · Vinothek · Caffetteria · Aperitifs</p>
+        <div class="quick-links">
+          <a class="btn primary" href="#menu">Speisekarte</a>
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Mohrenplatz+12+Garmisch-Partenkirchen" target="_blank" rel="noopener">Route</a>
+          <a class="btn" href="https://www.instagram.com/bottega_vitalenta/" target="_blank" rel="noopener">@bottega_vitalenta</a>
+        </div>
+      </div>
     </section>
 
-    <section class="panel" data-panel>
-      <div class="eyebrow">Caffetteria & Pasticceria</div>
-      <h1>Caffè. Dolci. Niente fretta.</h1>
-      <p class="sub">Espresso, Cappuccino, Cannoli, Tiramisù und Pistazienkuchen.</p>
+    <section class="section moods" aria-label="Bottega Angebot">
+      <article class="mood"><small>Caffetteria</small><strong>Caffè<br>& Dolci</strong></article>
+      <article class="mood"><small>Vinothek</small><strong>Vino<br>& Aperitivo</strong></article>
+      <article class="mood"><small>Paninoteca</small><strong>Focaccia<br>& Tradizione</strong></article>
     </section>
 
-    <section class="panel" data-panel>
-      <div class="eyebrow">Vinothek & Aperitivo</div>
-      <h1>Aperitivo, come in Italia.</h1>
-      <p class="sub">Wein, Aperol, Negroni, Bellini und kleine Gerichte dazu.</p>
+    <section class="menu-section" id="menu">
+      <div class="section">
+        <div class="menu-head">
+          <div>
+            <p class="kicker">La carta</p>
+            <h2 class="section-title">Speisekarte</h2>
+          </div>
+          <p class="menu-note">Alle Preise in Euro. Informationen zu Allergenen und Zusatzstoffen gibt es beim Personal.</p>
+        </div>
+
+        <div class="menu-grid">
+
+          <article class="menu-card">
+            <h3>Paninoteca</h3>
+            <div class="menu-item"><div class="menu-name">A’ Mare</div><div class="menu-desc">Oktopus · Ofenkartoffeln · Olivenöl (EVO) · Petersilie · weiße Sauce</div><div class="price">9,80</div></div>
+            <div class="menu-item"><div class="menu-name">Tricolore</div><div class="menu-desc">Mozzarella fior di latte · Tomaten · Pesto Genovese</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Bottega</div><div class="menu-desc">Salame Milano · Burrata · Salat · Zucchini</div><div class="price">9,80</div></div>
+            <div class="menu-item"><div class="menu-name">Vita Lenta</div><div class="menu-desc">Mortadella · Burrata · Pistaziencreme · Pistaziengranulat</div><div class="price">9,80</div></div>
+            <div class="menu-item"><div class="menu-name">L’Italiano</div><div class="menu-desc">San-Daniele-Rohschinken · Alpijana Käse · getrocknete Tomaten · Olivenpesto (schwarz)</div><div class="price">10,80</div></div>
+            <div class="menu-item"><div class="menu-name">Leggero</div><div class="menu-desc">Bresaola · Stracciatella · Rucola · Grana Käse</div><div class="price">9,80</div></div>
+            <div class="menu-item"><div class="menu-name">Romantico</div><div class="menu-desc">Auberginen Parmigiana · Basilikum · Olivenöl (EVO)</div><div class="price">8,90</div></div>
+            <div class="menu-item"><div class="menu-name">Mediterraneo</div><div class="menu-desc">Capocollo · geräucherter Scamorza · Waldpilze · Feigencreme</div><div class="price">10,80</div></div>
+          </article>
+
+          <article class="menu-card">
+            <h3>Tradizione</h3>
+            <div class="menu-item"><div class="menu-name">Caprese</div><div class="menu-desc">Mozzarella fior di latte · Tomaten · Pesto Genovese · Basilikum · Olivenöl (EVO) · mit Rosmarin-Focaccia</div><div class="price">11,80</div></div>
+            <div class="menu-item"><div class="menu-name">Oktopus Salat</div><div class="menu-desc">Oktopus · Karotte · Sellerie · Olivenöl (EVO) · weiße Sauce · mit Rosmarin-Focaccia</div><div class="price">14,80</div></div>
+            <div class="menu-item"><div class="menu-name">Auberginen-Parmigiana</div><div class="menu-desc">mit Rosmarin-Focaccia</div><div class="price">10,80</div></div>
+            <div class="menu-item"><div class="menu-name">Oktopus Carpaccio</div><div class="menu-desc">Oktopus · Minze · Zitrone · Cocktailsauce · mit Rosmarin-Focaccia</div><div class="price">14,80</div></div>
+            <div class="menu-item"><div class="menu-name">Rinder-Carpaccio</div><div class="menu-desc">Rucola · Grana Padano · Olivenöl (EVO) · mit Rosmarin-Focaccia</div><div class="price">12,80</div></div>
+          </article>
+
+          <article class="menu-card simple">
+            <h3>Focacce & Salumeria</h3>
+            <div class="menu-item"><div class="menu-name">Rosmarin-Focaccia</div><div class="price">5,90</div></div>
+            <div class="menu-item"><div class="menu-name">Tomaten-Focaccia</div><div class="price">6,90</div></div>
+            <div class="menu-item"><div class="menu-name">Salumiplatte <span style="font-weight:400;color:var(--muted)">· mit Rosmarin-Focaccia</span></div><div class="price">12,80</div></div>
+            <div class="menu-item"><div class="menu-name">Käseplatte <span style="font-weight:400;color:var(--muted)">· mit Rosmarin-Focaccia</span></div><div class="price">12,80</div></div>
+          </article>
+
+          <article class="menu-card simple">
+            <h3>Caffetteria</h3>
+            <div class="menu-item"><div class="menu-name">Espresso</div><div class="price">2,80</div></div>
+            <div class="menu-item"><div class="menu-name">Espresso Macchiato</div><div class="price">3,20</div></div>
+            <div class="menu-item"><div class="menu-name">Doppelter Espresso</div><div class="price">3,60</div></div>
+            <div class="menu-item"><div class="menu-name">Espresso Corretto</div><div class="price">4,20</div></div>
+            <div class="menu-item"><div class="menu-name">Cappuccino</div><div class="price">4,20</div></div>
+            <div class="menu-item"><div class="menu-name">Latte Macchiato</div><div class="price">4,80</div></div>
+            <div class="menu-item"><div class="menu-name">Tasse Kaffee</div><div class="price">4,20</div></div>
+            <div class="menu-item"><div class="menu-name">Tee</div><div class="price">4,20</div></div>
+          </article>
+
+          <article class="menu-card simple">
+            <h3>Pasticceria</h3>
+            <div class="menu-item"><div class="menu-name">Babà Napoletano</div><div class="price">4,40</div></div>
+            <div class="menu-item"><div class="menu-name">Cannolo Siciliano</div><div class="price">4,80</div></div>
+            <div class="menu-item"><div class="menu-name">Pasticciotto mit Vanille-Amarena</div><div class="price">3,60</div></div>
+            <div class="menu-item"><div class="menu-name">Tiramisù</div><div class="price">4,60</div></div>
+            <div class="menu-item"><div class="menu-name">Apfel-Mandel-Kuchen</div><div class="price">4,80</div></div>
+            <div class="menu-item"><div class="menu-name">Pistazien-Ricotta-Torte</div><div class="price">4,80</div></div>
+            <div class="menu-item"><div class="menu-name">Schokoladenmousse-Torte</div><div class="price">4,60</div></div>
+            <div class="menu-item"><div class="menu-name">Affogato Vanille</div><div class="price">4,40</div></div>
+            <div class="menu-item"><div class="menu-name">Affogato Haselnuss</div><div class="price">4,40</div></div>
+            <div class="menu-item"><div class="menu-name">Affogato Pistazien</div><div class="price">4,40</div></div>
+            <div class="menu-item"><div class="menu-name">Zitronensorbet</div><div class="price">4,60</div></div>
+          </article>
+
+          <article class="menu-card simple">
+            <h3>Aperitivi · 0,3 l</h3>
+            <div class="menu-item"><div class="menu-name">Aperol Spritz</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Campari Spritz</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Limoncello Spritz</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Hugo</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Italicus Spritz</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Gin Tonic</div><div class="price">8,90</div></div>
+            <div class="menu-item"><div class="menu-name">Americano</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Milano-Torino</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Negroni</div><div class="price">8,90</div></div>
+            <div class="menu-item"><div class="menu-name">Bellini</div><div class="price">7,90</div></div>
+            <div class="menu-item"><div class="menu-name">Campari Soda</div><div class="price">6,50</div></div>
+          </article>
+
+          <article class="menu-card wide">
+            <div class="menu-cols">
+              <div class="simple">
+                <h3>Tomarchio · 0,27 l</h3>
+                <div class="menu-item"><div class="menu-name">Cola</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Grüne Mandarine</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Granatapfel</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Zitronenlimonade</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Rote Orange</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Chinotto</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Tonic Water</div><div class="price">4,20</div></div>
+              </div>
+
+              <div class="simple">
+                <h3>Säfte & Sonstiges</h3>
+                <div class="menu-item"><div class="menu-name">Crodino · 0,10 l</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Johannisbeersaft · 0,33 l</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Maracujasaft · 0,33 l</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Apfelsaft · 0,33 l</div><div class="price">4,20</div></div>
+                <h3 style="margin-top:26px">Alk. 0%</h3>
+                <div class="menu-item"><div class="menu-name">Acqua Panna · 0,25 l</div><div class="price">3,60</div></div>
+                <div class="menu-item"><div class="menu-name">Acqua Panna · 0,75 l</div><div class="price">6,90</div></div>
+                <div class="menu-item"><div class="menu-name">Acqua San Pellegrino · 0,25 l</div><div class="price">3,60</div></div>
+                <div class="menu-item"><div class="menu-name">Acqua San Pellegrino · 0,75 l</div><div class="price">6,90</div></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card wide simple">
+            <h3>Biere · 0,33 l</h3>
+            <div class="menu-cols">
+              <div>
+                <div class="menu-item"><div class="menu-name">Moretti l’Autentica</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Moretti Filtrata a freddo</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Moretti Zero Alkohol</div><div class="price">4,20</div></div>
+              </div>
+              <div>
+                <div class="menu-item"><div class="menu-name">Messina</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Peroni</div><div class="price">4,20</div></div>
+                <div class="menu-item"><div class="menu-name">Peroni Capri</div><div class="price">4,20</div></div>
+              </div>
+            </div>
+            <p class="allergen">Informationen zu Allergenen und Zusatzstoffen erhalten Sie auf Nachfrage bei unserem Personal.</p>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <section class="panel" data-panel>
-      <div class="eyebrow">Paninoteca & Tradizione</div>
-      <h1>Focaccia. Burrata. Amore.</h1>
-      <p class="sub">Panini, Caprese, Carpaccio und italienische Klassiker.</p>
+    <section class="section" id="visit">
+      <div class="menu-head">
+        <div>
+          <p class="kicker">Besuchen</p>
+          <h2 class="section-title">Mohrenplatz 12.</h2>
+        </div>
+      </div>
+
+      <div class="visit-grid">
+        <article class="visit-card">
+          <h3>Ci vediamo.</h3>
+          <div class="facts">
+            <div class="fact"><small>Adresse</small><b>Mohrenplatz 12<br>Garmisch-Partenkirchen</b></div>
+            <div class="fact"><small>Öffnungszeiten</small><b>Dienstag–Sonntag<br>10:00–22:00 Uhr</b></div>
+            <div class="fact"><small>Instagram</small><b>@bottega_vitalenta</b></div>
+          </div>
+          <div class="visit-actions">
+            <a class="btn dark" href="https://www.google.com/maps/search/?api=1&query=Mohrenplatz+12+Garmisch-Partenkirchen" target="_blank" rel="noopener">Route öffnen</a>
+            <a class="btn" href="https://www.instagram.com/bottega_vitalenta/" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </article>
+
+        <div class="map-card">
+          <iframe
+            title="Bottega Vita lenta auf der Karte"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Mohrenplatz%2012%2C%20Garmisch-Partenkirchen&output=embed">
+          </iframe>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer>Mohrenplatz 12 · Garmisch-Partenkirchen · Di–So 10:00–22:00 Uhr</footer>
-  <div class="track" id="menu"></div>
+  <footer>
+    <strong>BOTTEGA · VITA LENTA</strong>
+    <span>Mohrenplatz 12 · Garmisch-Partenkirchen · Di–So 10–22 Uhr</span>
+  </footer>
 
   <script>
   (function(){
     "use strict";
-    var panels=[].slice.call(document.querySelectorAll("[data-panel]"));
-    var meter=document.getElementById("meter");
-    var orb1=document.getElementById("orb1");
-    var orb2=document.getElementById("orb2");
-    var progress=0;
-    var CUES=[
-      [0.00,0.00,0.15,0.23],
-      [0.28,0.36,0.43,0.51],
-      [0.56,0.64,0.71,0.79],
-      [0.84,0.90,1.08,1.18]
-    ];
-    function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
-    function smooth(t){return t*t*(3-2*t)}
-    function ramp(p,a,b){return b<=a?(p>=b?1:0):smooth(clamp((p-a)/(b-a),0,1))}
-    function readScroll(){
-      var max=document.documentElement.scrollHeight-window.innerHeight;
-      progress=max>0?clamp(window.pageYOffset/max,0,1):0;
+
+    var hero = document.querySelector(".hero-scroll");
+    var site = document.getElementById("site");
+    var clip = document.getElementById("coffeeVideo");
+    var heroLogo = document.getElementById("heroLogo");
+    var progressBar = document.getElementById("introProgress");
+    var scrollNote = document.getElementById("scrollNote");
+    var status = document.getElementById("videoStatus");
+
+    var duration = 0;
+    var targetTime = 0;
+    var easedTime = 0;
+    var ready = false;
+    var progress = 0;
+    var triedFallback = false;
+
+    /* The exact uploaded coffee video can be placed in the repository as coffee.mp4.
+       Until then a free Pexels coffee clip is used as a preview fallback. */
+    var LOCAL_VIDEO = "coffee.mp4";
+    var FALLBACK_VIDEO = "https://www.pexels.com/download/video/3845358/";
+
+    function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+    function smooth(t){ return t*t*(3-2*t); }
+
+    function setVideo(src){
+      clip.src = src;
+      clip.load();
     }
-    function paint(){
-      meter.style.transform="scaleX("+progress+")";
-      panels.forEach(function(el,i){
-        var c=CUES[i];
-        var enter=ramp(progress,c[0],c[1]);
-        var leave=ramp(progress,c[2],c[3]);
-        var o=enter*(1-leave);
-        var y=(1-enter)*22-leave*22;
-        el.style.opacity=o;
-        el.style.transform="translate3d(0,"+y+"px,0)";
-        el.style.pointerEvents=o>.6?"auto":"none";
-      });
-      orb1.style.transform="translate3d("+(progress*90)+"px,"+(progress*55)+"px,0) scale("+(1+progress*.18)+")";
-      orb2.style.transform="translate3d("+(-progress*80)+"px,"+(-progress*45)+"px,0) scale("+(1.12-progress*.12)+")";
-      requestAnimationFrame(paint);
+
+    clip.addEventListener("loadedmetadata", function(){
+      /* Stop before the final editor/outro frames if the local clip is longer. */
+      duration = Math.min(clip.duration || 0, 8.15);
+      clip.pause();
+      targetTime = progress * duration;
+      easedTime = targetTime;
+      try{ clip.currentTime = easedTime; }catch(e){}
+    });
+
+    clip.addEventListener("loadeddata", function(){
+      ready = true;
+      status.style.opacity = "0";
+    });
+
+    clip.addEventListener("error", function(){
+      if(!triedFallback){
+        triedFallback = true;
+        status.style.opacity = "1";
+        setVideo(FALLBACK_VIDEO);
+      } else {
+        status.textContent = "Video konnte nicht geladen werden";
+        status.style.opacity = "1";
+      }
+    });
+
+    function unlock(){
+      var p = clip.play();
+      if(p && p.then){
+        p.then(function(){ clip.pause(); }).catch(function(){});
+      }else{
+        clip.pause();
+      }
     }
-    window.addEventListener("scroll",readScroll,{passive:true});
-    window.addEventListener("resize",readScroll);
-    readScroll();
-    paint();
+    ["touchstart","pointerdown","wheel","keydown"].forEach(function(ev){
+      window.addEventListener(ev, unlock, {once:true,passive:true});
+    });
+
+    function read(){
+      var rect = hero.getBoundingClientRect();
+      var max = hero.offsetHeight - window.innerHeight;
+      progress = max > 0 ? clamp((-rect.top) / max, 0, 1) : 0;
+      if(duration) targetTime = progress * duration;
+
+      progressBar.style.transform = "scaleX("+progress+")";
+      scrollNote.style.opacity = String(clamp(1-progress*5,0,1));
+
+      var enter = smooth(clamp((progress-.13)/.16,0,1));
+      var leave = smooth(clamp((progress-.72)/.18,0,1));
+      var opacity = enter * (1-leave);
+      var y = (1-enter)*22 - leave*24;
+      var scale = .96 + enter*.04 - leave*.025;
+      heroLogo.style.opacity = String(opacity);
+      heroLogo.style.transform = "translate3d(0,"+y+"px,0) scale("+scale+")";
+
+      document.body.classList.toggle("in-content", rect.bottom <= window.innerHeight*1.08);
+
+      var videoFade = 1 - smooth(clamp((progress-.90)/.10,0,1));
+      clip.style.opacity = String(videoFade);
+    }
+
+    function frame(){
+      if(ready && duration){
+        var gap = targetTime - easedTime;
+        if(Math.abs(gap) > .001){
+          easedTime += gap * .115;
+          if(clip.readyState >= 2 && !clip.seeking){
+            try{ clip.currentTime = easedTime; }catch(e){}
+          }
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    window.addEventListener("scroll", read, {passive:true});
+    window.addEventListener("resize", read);
+
+    status.style.opacity = "1";
+    setVideo(LOCAL_VIDEO);
+    read();
+    requestAnimationFrame(frame);
   })();
   </script>
 </body>
