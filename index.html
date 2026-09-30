@@ -188,31 +188,39 @@
     .scroll-note{
       position:absolute;
       z-index:4;
-      bottom:max(24px,calc(env(safe-area-inset-bottom,0px) + 16px));
+      bottom:max(28px,calc(env(safe-area-inset-bottom,0px) + 20px));
       left:50%;
-      transform:translateX(-50%);
-      color:rgba(255,255,255,.65);
-      font-size:11px;
-      letter-spacing:.14em;
+      transform:translate3d(-50%,0,0);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:9px;
+      color:rgba(255,255,255,.78);
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:.16em;
       text-transform:uppercase;
       white-space:nowrap;
-      transition:opacity .25s;
+      will-change:opacity,transform,letter-spacing;
     }
-    .progress{
-      position:absolute;
-      z-index:5;
-      left:0;bottom:0;
-      width:100%;
-      height:2px;
-      background:rgba(255,255,255,.18);
-    }
-    .progress i{
+    .scroll-arrow{
+      width:24px;
+      height:24px;
       display:block;
-      width:100%;
-      height:100%;
-      transform:scaleX(0);
-      transform-origin:0 50%;
-      background:var(--cream);
+      opacity:.9;
+      animation:scrollPulse 1.8s var(--ease) infinite;
+      transform-origin:50% 50%;
+    }
+    .scroll-arrow path{
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    @keyframes scrollPulse{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(6px)}
     }
     .video-status{
       position:absolute;
@@ -559,9 +567,13 @@
         </div>
       </div>
 
-      <div class="scroll-note" id="scrollNote">Scrollen</div>
+      <div class="scroll-note" id="scrollNote" aria-hidden="true">
+        <svg class="scroll-arrow" viewBox="0 0 24 24">
+          <path d="M6.5 9.5 12 15l5.5-5.5"></path>
+        </svg>
+        <span>Scrollen</span>
+      </div>
       <div class="video-status" id="videoStatus">Video wird geladen …</div>
-      <div class="progress"><i id="introProgress"></i></div>
     </div>
   </section>
 
@@ -765,7 +777,6 @@
     var site = document.getElementById("site");
     var clip = document.getElementById("coffeeVideo");
     var heroLogo = document.getElementById("heroLogo");
-    var progressBar = document.getElementById("introProgress");
     var scrollNote = document.getElementById("scrollNote");
     var status = document.getElementById("videoStatus");
 
@@ -832,8 +843,12 @@
       progress = max > 0 ? clamp((-rect.top) / max, 0, 1) : 0;
       if(duration) targetTime = progress * duration;
 
-      progressBar.style.transform = "scaleX("+progress+")";
-      scrollNote.style.opacity = String(clamp(1-progress*5,0,1));
+      var cueFade = 1 - smooth(clamp((progress-.62)/.24,0,1));
+      var cueY = progress * 14;
+      var cueScale = 1 - progress * .055;
+      scrollNote.style.opacity = String(cueFade);
+      scrollNote.style.transform = "translate3d(-50%,"+cueY+"px,0) scale("+cueScale+")";
+      scrollNote.style.letterSpacing = (.16 + progress*.08) + "em";
 
       var enter = smooth(clamp((progress-.13)/.16,0,1));
       var leave = smooth(clamp((progress-.72)/.18,0,1));
